@@ -13,24 +13,24 @@ class SuffixTree:
                 
     def add_node(self, origin, symbol, leafnum = -1): 
         self.num += 1
-        self.nodes[origin][1][symbol] = self.num
+        self.nodes[origin][1][symbol] = self.num 
         self.nodes[self.num] = (leafnum,{})
         
     def add_suffix(self, p, sufnum):
         position = 0
         no = 0
         while position < len(p):
-            if p[position] not in self.nodes[no][1].keys():
-                if position == len(p) - 1:
-                    self.add_node(no, p[position], sufnum)
-                else:
-                    self.add_node(no, p[position])
+            if p[position] not in self.nodes[no][1].keys(): 
+                if position == len(p) - 1: 
+                    self.add_node(no, p[position], sufnum)  
+                else: 
+                    self.add_node(no, p[position]) 
             no = self.nodes[no][1][p[position]] 
             position += 1
     
     def suffix_tree_from_seq(self, text):
         t = text+"$"
-        for i in range(len(t)):
+        for i in range(len(t)): 
             self.add_suffix(t[i:], i)
             
     def find_pattern(self, pattern):
@@ -60,7 +60,7 @@ class SuffixTree:
             return None
         else:
             nodesID = list(self.nodes[nodes][1].values())
-            for a iin nodesID:
+            for a in nodesID:
                 nodesID.extend(list(self.nodes[a][1].values()))
             return nodesID
     
