@@ -3,6 +3,7 @@ class SuffixTree:
     def __init__(self):
         self.nodes = { 0:(-1,{}) }
         self.num = 0
+        self.seq = ''
     
     def print_tree(self):
         for k in self.nodes.keys():
@@ -29,7 +30,8 @@ class SuffixTree:
             position += 1
     
     def suffix_tree_from_seq(self, text):
-        t = text+"$"
+        self.seq = text
+        t = text + "$"
         for i in range(len(t)): 
             self.add_suffix(t[i:], i)
             
@@ -37,8 +39,9 @@ class SuffixTree:
         position = 0
         no = 0
         for position in range(len(pattern)):
-            if pattern[position] is self.nodes[no][1].keys():
+            if pattern[position] in self.nodes[no][1].keys():
                  no = self.nodes[no][1][pattern[position]]
+                 position += 1
             else:
                 return None
         return self.get_leafes_below(no)
@@ -59,12 +62,33 @@ class SuffixTree:
         if node >= len(self.nodes):
             return None
         else:
-            nodesID = list(self.nodes[nodes][1].values())
+            nodesID = list(self.nodes[node][1].values())
             for a in nodesID:
                 nodesID.extend(list(self.nodes[a][1].values()))
             return nodesID
     
     #Ex1b
+    def matches_prefix (self, prefix):
+        NS = SuffixTree.find_pattern(self, prefix)
+        if NS == None or NS == []:
+            return None
+        else: 
+            match = []
+            match.append(self.seq)
+            for a in NS:
+                match.append(self.seq[a:])
+            match = sorted(match, key = len, reverse = True)
+            matchfinal = []
+            for i in match:
+                matchfinal.append(self.seq)
+            for b in range(len(match)):
+                c = len(match[b])
+                d = 1
+                while c > len(prefix):
+                    matchfinal.append(match[b][:-d])
+                    c = c - 1
+                    d = d + 1
+            return (list(dict.fromkeys(matchfinal)))
 
 def test():
     seq = "TACTA"
@@ -78,9 +102,11 @@ def test2():
     seq = "TACTA"
     st = SuffixTree()
     st.suffix_tree_from_seq(seq)
+    print(st.matches_prefix('TA'))
     print (st.find_pattern("TA"))
     #print(st.repeats(2,2))
 
 test()
 print()
 test2()
+print()
