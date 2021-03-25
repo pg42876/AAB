@@ -18,15 +18,17 @@ class SuffixTree:
     
     def print_tree(self):
         for k in self.nodes.keys():
-            if self.nodes[k][0] < 0:
-                print (k, "->", self.nodes[k][1]) 
+            m = self.unpack(k) 
+            n = self.unpack(k) 
+            if m < 0:
+                print(k, "->", self.nodes[k][1])
             else:
-                print (k, ":", self.nodes[k][0])
+                print(k, ":", m, n)
                 
     def add_node(self, origin, symbol, leafnum = -1): 
-        self.num += 1
-        self.nodes[origin][1][symbol] = self.num
-        self.nodes[self.num] = (leafnum,{})
+        self.num += 1 
+        self.nodes[origin][1][symbol] = self.num  
+        self.nodes[self.num] = (leafnum, {}) 
         
     def add_suffix(self, p, sufnum):
         position = 0
@@ -40,10 +42,15 @@ class SuffixTree:
             no = self.nodes[no][1][p[position]] 
             position += 1
     
-    def suffix_tree_from_seq(self, text):
-        t = text+"$"
-        for i in range(len(t)):
-            self.add_suffix(t[i:], i)
+    def suffix_tree_from_seq(self, sq1, sq2):
+        sq1 = sq1 + '$'
+        sq2 = sq2 + '#'
+        self.sq1 = sq1
+        self.sq2 = sq2
+        for i in range(len(sq1)): 
+            self.add_suffix(sq1[i:], (0, i)) #vamos adicionar as leafs o 0, ou 1 correspondente a seq e o i que é o numero da letra onde começou
+        for i in range(len(sq2)):  
+            self.add_suffix(sq2[i:], (1, i))
             
     def find_pattern(self, pattern):
         position = 0
@@ -56,15 +63,23 @@ class SuffixTree:
         return self.get_leafes_below(no)
         
     def get_leafes_below(self, node):
-        res = []
-        if self.nodes[node][0] >=0: 
-            res.append(self.nodes[node][0])            
-        else:
-            for k in self.nodes[node][1].keys():
-                newnode = self.nodes[node][1][k]
-                leafes = self.get_leafes_below(newnode)
-                res.extend(leafes)
-        return res
+        f1 = []
+        f2 = []
+        m = self.unpack(node)
+        n = self.unpack(node)
+        if m >= 0:  
+            if m == 0:
+                f2.append(n)
+            else:
+                f1.append(n)
+        else:  
+            for k in self.nodes[node][1].keys(): 
+                newnode = self.nodes[node][1][k]  
+                l = self.get_leafes_below(newnode) 
+                r = self.get_leafes_below(newnode) 
+                f1.extend(r) 
+                f2.extend(l)
+        return(f1, f2)
 
     #Ex2
     def largestCommonSubstring(self):
