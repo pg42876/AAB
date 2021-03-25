@@ -6,6 +6,7 @@ class SuffixTree:
         self.sq1 = ''
         self.sq2 = ''
     
+    #Ex2
     def unpack (self, k):
         if self.nodes[k][0] == -1:
             a = self.nodes[k][0]
@@ -65,7 +66,8 @@ class SuffixTree:
                 res.extend(leafes)
         return res
 
-    def largestcomsubs(self):
+    #Ex2
+    def largestCommonSubstring(self):
         matchfinal = ''
         contagemfinal = 0
         for c in range(len(self.sq1)):
