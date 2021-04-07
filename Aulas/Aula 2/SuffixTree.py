@@ -3,7 +3,7 @@
 class SuffixTree:
     
     def __init__(self):
-        self.nodes = { 0:(-1,{}) }
+        self.nodes = { 0:(-1,{}) } # root node
         self.num = 0
     
     def print_tree(self):

@@ -7,7 +7,7 @@ class SuffixTree:
         self.sq2 = ''
     
     #Ex2
-    def unpack (self, k):
+    def unpack (self, k): #Vai dar unpack do tuplo que se encontra nas leafs
         if self.nodes[k][0] == -1:
             a = self.nodes[k][0]
             b = ''
@@ -26,9 +26,9 @@ class SuffixTree:
                 print(k, ":", m, n)
                 
     def add_node(self, origin, symbol, leafnum = -1): 
-        self.num += 1 
-        self.nodes[origin][1][symbol] = self.num  
-        self.nodes[self.num] = (leafnum, {}) 
+        self.num += 1
+        self.nodes[origin][1][symbol] = self.num
+        self.nodes[self.num] = (leafnum,{})
         
     def add_suffix(self, p, sufnum):
         position = 0
@@ -42,7 +42,7 @@ class SuffixTree:
             no = self.nodes[no][1][p[position]] 
             position += 1
     
-    def suffix_tree_from_seq(self, sq1, sq2):
+    def suffix_tree_from_seq(self, text):
         sq1 = sq1 + '$'
         sq2 = sq2 + '#'
         self.sq1 = sq1
@@ -62,7 +62,7 @@ class SuffixTree:
                 return None
         return self.get_leafes_below(no)
         
-    def get_leafes_below(self, node):
+    def get_leafes_below(self, node): #Alterar a get leafs para as duas sequências; vai fazer o mesmo para as duas listas diferentes consoante as suas sequências
         f1 = []
         f2 = []
         m = self.unpack(node)
@@ -82,7 +82,7 @@ class SuffixTree:
         return(f1, f2)
 
     #Ex2
-    def largestCommonSubstring(self):
+    def largestCommonSubstring(self): #Corre as duas sequências e vai ver onde existe um match mais das duas sequências e dá isso como output
         matchfinal = ''
         contagemfinal = 0
         for c in range(len(self.sq1)):
