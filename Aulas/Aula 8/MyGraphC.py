@@ -54,8 +54,8 @@ class MyGraph:
 
     ## Successors, predecessors, adjacent nodes
         
-    def get_successors(self, v): 
-        dt = []
+    def get_successors(self, v): #Sucessores
+        dt = [] #Lista de sucessores
         for i in self.graph[v]:
             dest, ct = i
             dt.append(dest) 
@@ -63,10 +63,10 @@ class MyGraph:
              
     def get_predecessors(self, v): #Ir ao grafo e procurar o nó v quando é value e guardamos a key
         res = [] #Lista de antecessores
-        for k in self.graph.keys(): #Percorre as keys do dicionário
+        for k in self.graph.keys(): #Percorre as keys do grafo
             dt = [] #Lista de sucessores
             for i in self.graph[k]: #Percorrer os valores em i
-                dest, ct = i #I é um tuplo com o vértice destino e o custo
+                dest, ct = i #i é um tuplo com o vértice destino e o custo
                 dt.append(dest) #Adicionar o vértice destino à lista de vértices
                 if v in dt: #Verifica se v se encontra na lista de sucessores de i
                     res.append(i) #Se isto se verificar o i vai ser antecessor de v entao adicionamos a lista
@@ -101,7 +101,7 @@ class MyGraph:
             node = l.pop(0) #Vai ser removido o primeiro elemento da lista l, guardando este elemento no node
             for elem in self.graph[node]: #Para cada elem no grafo na posição node
                 newnode, ct = elem
-                if newnode != v: #Se o node for diferente do nó origem
+                if newnode != v: #Se o newnode for diferente do nó origem
                     res.append(newnode) #Acrescenta o node ao resultado
                 if newnode not in res and newnode not in l and newnode != node: #Faz a verificação se já existe ou não para não haver repetições
                     l.append(newnode) #Os elementos são adicionados na ordem em que são percorridos
@@ -114,8 +114,8 @@ class MyGraph:
             node = l.pop(0) #Vai ser removido o primeiro elemento da lista l, guardando este elemento no node
             for elem in self.graph[node]: #Para cada elem nos valores associados aos nodes que vêm do grafo
                 newnode, ct = elem
-                if newnode != v: #Se o node for diferente do nó origem
-                    res.append(newnode) #Acrescenta o node ao resultado
+                if newnode != v: #Se o newnode for diferente do nó origem
+                    res.append(newnode) #Acrescenta o newnode ao resultado
                 s = 0 #
                 if newnode not in res and newnode not in l:
                     l.insert(s, newnode) #Insert - dá a posição que queremos inserir e qual é o elemento associado a essa posição 
@@ -135,7 +135,7 @@ class MyGraph:
                     if newnode == d: #Se o newnode for igual ao destino 
                         return dist + ct #Dá return da distância + ct
                     elif newnode not in visited: #Se o elem (nó em análise) não estiver nos visitados
-                        l.append((newnode, dist + ct)) #Adiciona à lista tuplo (elemento (nó), distância + 1)
+                        l.append((newnode, dist + ct)) #Adiciona à lista tuplo (elemento (nó), distância + ct)
                         visited.append(newnode) #Adiciona o newnode aos visitados
             return None #Retorna None se não for atingível
             
@@ -147,20 +147,20 @@ class MyGraph:
             visited = [s] #Lista de nós visitados - serve apenas para perceber se um nó já foi ou não visitado
             while len(l) > 0:
                 node, path, cost = l.pop(0) #Remove o o nó, o caminho e o custo e guarda o nó no node, o caminho no path e o custo no ct
-                maiorct = 999999
+                maiorct = 999999 #Custo arbitrário
                 for elem in self.graph[node]: 
                     newnode, ct = elem
                     if newnode == d: #Se o elemento é = ao nó destino
-                        return path + [node, newnode], cost + ct #Retorna o caminho + o antecessor e o seu sucessor
+                        return path + [node, newnode], cost + ct #Retorna o caminho + o antecessor e o seu sucessor + custo 
                     if ct < maiorct:
                         maiorct = ct
-                        newnewnode = newnode
+                        newnewnode = newnode #Nó a analisar
                 if newnewnode not in visited: #se o elemento não está nos nós visitados - adicionar à queue
-                    l.append((newnewnode, [(node, newnewnode)], ct + maiorct)) #Adiciona o elemento (nó a analisar), o caminho percorrido + o nó analisado
+                    l.append((newnewnode, [(node, newnewnode)], ct + maiorct)) #Adiciona o elemento (nó a analisar), o caminho percorrido + custo
                     visited.append(node) #Adiciona o elemento aos visitados
             return None
             
-    def reachable_with_dist(self, s):
+    def reachable_with_dist(self, s): #Procura com distância estabelecida
         res = [] 
         l = [(s, 0)] #s - nó de origem; 0 - representa a distância do nó 
         while len(l) > 0:
