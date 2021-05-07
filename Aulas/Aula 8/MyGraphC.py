@@ -116,7 +116,7 @@ class MyGraph:
                 newnode, ct = elem
                 if newnode != v: #Se o newnode for diferente do nó origem
                     res.append(newnode) #Acrescenta o newnode ao resultado
-                s = 0 #
+                s = 0 
                 if newnode not in res and newnode not in l:
                     l.insert(s, newnode) #Insert - dá a posição que queremos inserir e qual é o elemento associado a essa posição 
                     s += 1
@@ -147,7 +147,7 @@ class MyGraph:
             visited = [s] #Lista de nós visitados - serve apenas para perceber se um nó já foi ou não visitado
             while len(l) > 0:
                 node, path, cost = l.pop(0) #Remove o o nó, o caminho e o custo e guarda o nó no node, o caminho no path e o custo no ct
-                maiorct = 999999 #Custo arbitrário
+                maiorct = 999999 #Custo arbitrário; import numpy as np np.inf
                 for elem in self.graph[node]: 
                     newnode, ct = elem
                     if newnode == d: #Se o elemento é = ao nó destino
